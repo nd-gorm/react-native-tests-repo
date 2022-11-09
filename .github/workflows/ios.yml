@@ -67,8 +67,8 @@ jobs:
           -workspace ios/TestProject.xcworkspace \
           -scheme TestProject \
           -sdk iphonesimulator \
-          -configuration Debug \
-          -destination 'platform=iOS Simulator,name=iPhone 11 Pro' \
+          -configuration Release \
+          -destination 'platform=iOS Simulator,name=iPhone 12 Pro' \
           build \
           CODE_SIGNING_ALLOWED=NO | xcpretty"
 
