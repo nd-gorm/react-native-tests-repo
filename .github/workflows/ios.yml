@@ -56,13 +56,21 @@ jobs:
         working-directory: ios
         run: pod install
 
-      - name: Build iOS App (debug)
-        run: |
-          which clang
-          export SKIP_BUNDLING=1
-          set -o pipefail
-          xcodebuild CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ -workspace ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -derivedDataPath ios/build -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
-        shell: bash
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: Build App
+        run: "set -o pipefail && xcodebuild \
+          CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ \
+          -derivedDataPath build -UseModernBuildSystem=YES \
+          -workspace TestProject.xcworkspace \
+          -scheme TestProject \
+          -sdk iphonesimulator \
+          -configuration Debug \
+          -destination 'platform=iOS Simulator,name=iPhone 11 Pro' \
+          build \
+          CODE_SIGNING_ALLOWED=NO | xcpretty"
+
       # - name: Compress .xcarchive
       #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
 
