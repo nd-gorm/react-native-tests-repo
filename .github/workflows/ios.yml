@@ -47,22 +47,19 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-pods-cache-
 
+      - name: react native info
+        run: npx react-native info
+
       - name: Install pod dependencies
         working-directory: ios
         run: pod install
 
-      # - name: Build iOS (debug)
-      #   run: |
-      #     which clang
-      #     export SKIP_BUNDLING=1
-      #     xcodebuild -workspace ios/TestProject.xcworkspace -scheme TestProject -sdk iphoneos -configuration Debug -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
-
-      - name: Build iOS App
+      - name: Build iOS App (debug)
         run: |
           which clang
           export SKIP_BUNDLING=1
           set -o pipefail
-          xcodebuild CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ -workspace ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -UseModernBuildSystem=YES
+          xcodebuild -workspace ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
         shell: bash
       # - name: Compress .xcarchive
       #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
