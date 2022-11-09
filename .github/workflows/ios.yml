@@ -18,6 +18,11 @@ jobs:
       - name: Checkout Git repo
         uses: actions/checkout@v3
 
+      - name: Run buildcache
+        uses: mikehardy/buildcache-action@v2.1.0
+
+      # continue-on-error: true
+
       # - name: Setup Node environment v. ${{ inputs.node-version }}
       - name: Setup Node environment v. '16'
         uses: actions/setup-node@v3
@@ -36,6 +41,9 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: react native info
+        run: npx react-native info
+
       - name: Cache pods
         uses: actions/cache@v3
         with:
@@ -43,9 +51,6 @@ jobs:
           key: ${{ runner.OS }}-pods-cache-${{ hashFiles('**/ios/Podfile.lock') }}
           restore-keys: |
             ${{ runner.OS }}-pods-cache-
-
-      - name: react native info
-        run: npx react-native info
 
       - name: Install pod dependencies
         working-directory: ios
@@ -56,7 +61,7 @@ jobs:
           which clang
           export SKIP_BUNDLING=1
           set -o pipefail
-          xcodebuild -workspace ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
+          xcodebuild -workspace CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -derivedDataPath ios/build -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
         shell: bash
       # - name: Compress .xcarchive
       #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
