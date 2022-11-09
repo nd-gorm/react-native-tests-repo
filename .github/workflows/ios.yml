@@ -41,8 +41,9 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: react native info
-        run: npx react-native info
+      # for debugging runners
+      # - name: react native info
+      #   run: npx react-native info
 
       - name: Cache pods
         uses: actions/cache@v3
