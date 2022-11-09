@@ -26,6 +26,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import TestComp from './components/TestComp';
 
 const Section: React.FC<
   PropsWithChildren<{
@@ -53,6 +54,7 @@ const Section: React.FC<
         ]}>
         {children}
       </Text>
+      <TestComp />
     </View>
   );
 };
