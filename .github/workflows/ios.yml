@@ -1,0 +1,73 @@
+name: iOS CI
+on:
+  [push]
+  # workflow_call:
+  #   inputs:
+  #     node-version:
+  #       required: true
+  #       type: string
+  #     osx-version:
+  #       required: true
+  #       type: string
+
+jobs:
+  build:
+    # runs-on: ${{ inputs.osx-version }}
+    runs-on: macos-12
+    steps:
+      - name: Checkout Git repo
+        uses: actions/checkout@v3
+
+      # - name: Setup Node environment v. ${{ inputs.node-version }}
+      - name: Setup Node environment v. '16'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          # node-version: ${{ inputs.node-version }}
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Print xcode path
+        run: xcode-select -p
+
+      - name: Cache pods
+        uses: actions/cache@v3
+        with:
+          path: ios/Pods
+          key: ${{ runner.OS }}-pods-cache-${{ hashFiles('**/ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-pods-cache-
+
+      - name: Install pod dependencies
+        working-directory: ios
+        run: pod install
+
+      # - name: Build iOS (debug)
+      #   run: |
+      #     which clang
+      #     export SKIP_BUNDLING=1
+      #     xcodebuild -workspace ios/TestProject.xcworkspace -scheme TestProject -sdk iphoneos -configuration Debug -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
+
+      - name: Build iOS App
+        run: |
+          which clang
+          export SKIP_BUNDLING=1
+          set -o pipefail
+          xcodebuild CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ -workspace ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -UseModernBuildSystem=YES
+        shell: bash
+      # - name: Compress .xcarchive
+      #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
+
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ios-xarchive
+      #     path: TestProject.xcarchive.zip
