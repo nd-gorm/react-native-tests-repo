@@ -61,7 +61,7 @@ jobs:
           which clang
           export SKIP_BUNDLING=1
           set -o pipefail
-          xcodebuild -workspace CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -derivedDataPath ios/build -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
+          xcodebuild -workspace CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ -workspace ios/TestProject.xcworkspace -scheme TestProject -configuration Debug -derivedDataPath ios/build -UseModernBuildSystem=YES CODE_SIGNING_ALLOWED=NO
         shell: bash
       # - name: Compress .xcarchive
       #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
