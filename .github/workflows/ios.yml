@@ -36,9 +36,6 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Print xcode path
-        run: xcode-select -p
-
       - name: Cache pods
         uses: actions/cache@v3
         with:
