@@ -15,9 +15,12 @@ env:
 
 jobs:
   steps:
-    env:
-      NODE_VERSION: ${{ env.NODE_VERSION }}
-      UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
+  - name: Set env variables
+    run: |
+      echo "NODE_VERSION=16" >> $GITHUB_ENV && \
+      echo "UBUNTU_VERSION=ubuntu-22.04" >> $GITHUB_ENV && \
+      echo "OSX_VERSION=macos-12" >> $GITHUB_ENV
+
     - name: run-react-native-tests:
       uses: ./.github/workflows/npm.yml
       with:
