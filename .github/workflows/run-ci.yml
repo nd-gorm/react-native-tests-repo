@@ -15,8 +15,8 @@ env:
 jobs:
   run-react-native-tests:
     env:
-    NODE_VERSION: ${{ env.NODE_VERSION }}
-    UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
+      NODE_VERSION: ${{ env.NODE_VERSION }}
+      UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
     uses: ./.github/workflows/npm.yml
     with:
       node-version: ${{ env.NODE_VERSION }}
