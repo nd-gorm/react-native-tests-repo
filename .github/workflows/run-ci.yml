@@ -1,4 +1,5 @@
 name: Run CI
+description: 'Runs a full CI, including: js tests, Android- andd iOS build.'
 run-name: ${{ github.actor }} - Running full CI
 on: [push]
 # on:
@@ -13,20 +14,22 @@ env:
   OSX_VERSION: 'macos-12'
 
 jobs:
+  env:
+    NODE_VERSION: ${{ env.NODE_VERSION }}
+    UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
   run-react-native-tests:
-    env:
-      NODE_VERSION: ${{ env.NODE_VERSION }}
-      UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
     uses: ./.github/workflows/npm.yml
     with:
       node-version: ${{ env.NODE_VERSION }}
       ubuntu-version: ${{ env.UBUNTU_VERSION }}
+
   run-android-build:
     needs: run-react-native-tests
     uses: ./.github/workflows/android.yml
     with:
       node-version: ${{ env.NODE_VERSION }}
       ubuntu-version: ${{ env.UBUNTU_VERSION }}
+
   run-ios-build:
     needs: run-android-build
     uses: ./.github/workflows/ios.yml
