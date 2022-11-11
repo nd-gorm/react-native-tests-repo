@@ -1,4 +1,4 @@
-name: Run full CI
+name: Full CI
 run-name: ${{ github.actor }} - Run full CI
 on: [push]
 
