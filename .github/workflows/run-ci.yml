@@ -1,0 +1,32 @@
+name: Run CI
+run-name: ${{ github.actor }} - Running full CI
+on: [push]
+# on:
+#   pull_request:
+#     # only run when running pr against main
+#     branches:
+#       - main
+
+env:
+  NODE_VERSION: '16'
+  UBUNTU_VERSION: 'ubuntu-22.04'
+  OSX_VERSION: 'macos-12'
+
+jobs:
+  run-react-native-tests:
+    uses: ./.github/workflows/npm.yml
+    with:
+      node-version: '$NODE_VERSION'
+      ubuntu-version: '$UBUNTU_VERSION'
+  run-android-build:
+    needs: run-react-native-tests
+    uses: ./.github/workflows/android.yml
+    with:
+      node-version: '$NODE_VERSION'
+      ubuntu-version: '$OSX_VERSION'
+  run-ios-build:
+    needs: run-android-build
+    uses: ./.github/workflows/ios.yml
+    with:
+      node-version: '$NODE_VERSION'
+      osx-version: '$OSX_VERSION'

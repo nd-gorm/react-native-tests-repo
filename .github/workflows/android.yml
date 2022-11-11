@@ -1,0 +1,38 @@
+name: Android CI
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+      ubuntu-version:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ${{ inputs.ubuntu-version }}
+    steps:
+      - name: Checkout Git repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node environment v. ${{ inputs.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build Android apk (debug)
+        working-directory: android
+        run: |
+          ./gradlew assembleDebug -Dorg.gradle.logging.level=info --no-daemon

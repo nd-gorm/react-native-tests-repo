@@ -1,19 +1,17 @@
 name: iOS CI
 on:
-  [push]
-  # workflow_call:
-  #   inputs:
-  #     node-version:
-  #       required: true
-  #       type: string
-  #     osx-version:
-  #       required: true
-  #       type: string
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+      osx-version:
+        required: true
+        type: string
 
 jobs:
   build:
-    # runs-on: ${{ inputs.osx-version }}
-    runs-on: macos-12
+    runs-on: ${{ inputs.osx-version }}
     steps:
       - name: Checkout Git repo
         uses: actions/checkout@v3
@@ -21,14 +19,10 @@ jobs:
       - name: Run buildcache
         uses: mikehardy/buildcache-action@v2.1.0
 
-      # continue-on-error: true
-
-      # - name: Setup Node environment v. ${{ inputs.node-version }}
-      - name: Setup Node environment v. '16'
+      - name: Setup Node environment v. ${{ inputs.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          # node-version: ${{ inputs.node-version }}
+          node-version: ${{ inputs.node-version }}
 
       - name: Cache npm dependencies
         uses: actions/cache@v3
@@ -60,7 +54,8 @@ jobs:
       - name: Install xcpretty
         run: gem install xcpretty
 
-      - name: Build App
+      - name: Build App (Debug)
+        working-directory: ios
         run: "set -o pipefail && xcodebuild \
           CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ \
           -derivedDataPath build -UseModernBuildSystem=YES \
@@ -71,16 +66,3 @@ jobs:
           -destination 'platform=iOS Simulator,name=iPhone 12 Pro' \
           build \
           CODE_SIGNING_ALLOWED=NO | xcpretty"
-
-      - name: Build Android apk (debug)
-        working-directory: android
-        run: |
-          ./gradlew assembleDebug -Dorg.gradle.logging.level=info --no-daemon
-
-      # - name: Compress .xcarchive
-      #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
-
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: ios-xarchive
-      #     path: TestProject.xcarchive.zip
