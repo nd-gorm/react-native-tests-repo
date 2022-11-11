@@ -16,14 +16,14 @@ on:
         required: true
         type: string
         options:
-          - '16'
+        - 16'
       ubuntu-version:
         description: Specify Ubuntu version
         required: true
         type: string
         options:
-          - 'ubuntu-22.04'
-          - 'ubunto-latest'
+        - ubuntu-22.04
+        - ubuntu-latest
 
 jobs:
   run_npm:

@@ -16,14 +16,14 @@ on:
         required: true
         type: string
         options:
-          - '16'
+        - '16'
       osx-version:
         description: Specify OSX version
         required: true
         type: string
         options:
-          - 'macos-12'
-          - 'macos-latest'
+        - macos-12
+        - macos-latest
 
 jobs:
   build:
