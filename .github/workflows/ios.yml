@@ -67,10 +67,15 @@ jobs:
           -workspace ios/TestProject.xcworkspace \
           -scheme TestProject \
           -sdk iphonesimulator \
-          -configuration Release \
+          -configuration Debug \
           -destination 'platform=iOS Simulator,name=iPhone 12 Pro' \
           build \
           CODE_SIGNING_ALLOWED=NO | xcpretty"
+
+      - name: Build Android apk (debug)
+        working-directory: android
+        run: |
+          ./gradlew assembleDebug -Dorg.gradle.logging.level=info --no-daemon
 
       # - name: Compress .xcarchive
       #   run: zip -r -9 TestProject.xcarchive.zip $PWD/TestProject.xcarchive/
