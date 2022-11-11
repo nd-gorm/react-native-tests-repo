@@ -21,20 +21,20 @@ jobs:
         echo "UBUNTU_VERSION=ubuntu-22.04" >> $GITHUB_ENV && \
         echo "OSX_VERSION=macos-12" >> $GITHUB_ENV
 
-    - name: run-react-native-tests:
+    - name: run-react-native-tests
       uses: ./.github/workflows/npm.yml
       with:
         node-version: ${{ env.NODE_VERSION }}
         ubuntu-version: ${{ env.UBUNTU_VERSION }}
 
-    - name: run-android-build:
+    - name: run-android-build
       needs: run-react-native-tests
       uses: ./.github/workflows/android.yml
       with:
         node-version: ${{ env.NODE_VERSION }}
         ubuntu-version: ${{ env.UBUNTU_VERSION }}
 
-    - name: run-ios-build:
+    - name: run-ios-build
       needs: run-android-build
       uses: ./.github/workflows/ios.yml
       with:
