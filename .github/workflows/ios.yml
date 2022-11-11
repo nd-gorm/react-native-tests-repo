@@ -9,6 +9,17 @@ on:
         required: true
         type: string
 
+  workflow_dispatch:
+    inputs:
+      node-version:
+        description: Specify Node version
+        required: true
+        type: string
+      osx-version:
+        description: Specify OSX version
+        required: true
+        type: string
+
 jobs:
   build:
     runs-on: ${{ inputs.osx-version }}
@@ -59,7 +70,7 @@ jobs:
         run: "set -o pipefail && xcodebuild \
           CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ \
           -derivedDataPath build -UseModernBuildSystem=YES \
-          -workspace ios/TestProject.xcworkspace \
+          -workspace TestProject.xcworkspace \
           -scheme TestProject \
           -sdk iphonesimulator \
           -configuration Debug \

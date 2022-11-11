@@ -9,6 +9,17 @@ on:
         required: true
         type: string
 
+  workflow_dispatch:
+    inputs:
+      node-version:
+        description: Specify Node version
+        required: true
+        type: string
+      ubuntu-version:
+        description: Specify Ubuntu version
+        required: true
+        type: string
+
 jobs:
   run_npm:
     runs-on: ${{ inputs.ubuntu-version }}

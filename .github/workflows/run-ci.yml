@@ -1,12 +1,6 @@
 name: Run full CI
 run-name: ${{ github.actor }} - Run full CI
 on: [push]
-# on:
-#   pull_request:
-#     # only run when running pr against main
-#     branches:
-#       - main
-# TODO: find a way to set global env vars so we don't have to specify versions foreach workflow
 
 jobs:
   run-react-native-tests:
