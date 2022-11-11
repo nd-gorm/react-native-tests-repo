@@ -14,25 +14,26 @@ env:
   OSX_VERSION: 'macos-12'
 
 jobs:
-  env:
-    NODE_VERSION: ${{ env.NODE_VERSION }}
-    UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
-  run-react-native-tests:
-    uses: ./.github/workflows/npm.yml
-    with:
-      node-version: ${{ env.NODE_VERSION }}
-      ubuntu-version: ${{ env.UBUNTU_VERSION }}
+  steps:
+    env:
+      NODE_VERSION: ${{ env.NODE_VERSION }}
+      UBUNTU_VERSION: ${{ env.UBUNTU_VERSION }}
+    - name: run-react-native-tests:
+      uses: ./.github/workflows/npm.yml
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        ubuntu-version: ${{ env.UBUNTU_VERSION }}
 
-  run-android-build:
-    needs: run-react-native-tests
-    uses: ./.github/workflows/android.yml
-    with:
-      node-version: ${{ env.NODE_VERSION }}
-      ubuntu-version: ${{ env.UBUNTU_VERSION }}
+    - name: run-android-build:
+      needs: run-react-native-tests
+      uses: ./.github/workflows/android.yml
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        ubuntu-version: ${{ env.UBUNTU_VERSION }}
 
-  run-ios-build:
-    needs: run-android-build
-    uses: ./.github/workflows/ios.yml
-    with:
-      node-version: ${{ env.NODE_VERSION }}
-      osx-version: ${{ env.OSX_VERSION }}
+    - name: run-ios-build:
+      needs: run-android-build
+      uses: ./.github/workflows/ios.yml
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        osx-version: ${{ env.OSX_VERSION }}
