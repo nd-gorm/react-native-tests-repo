@@ -14,13 +14,13 @@ on:
       node-version:
         description: Specify Node version
         required: true
-        type: string
+        type: choice
         options:
         - 16'
       ubuntu-version:
         description: Specify Ubuntu version
         required: true
-        type: string
+        type: choice
         options:
         - ubuntu-22.04
         - ubuntu-latest
