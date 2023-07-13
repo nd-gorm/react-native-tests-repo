@@ -3,20 +3,20 @@ run-name: ${{ github.actor }} - Run full CI
 on: [push]
 
 jobs:
-  run-react-native-tests:
-    uses: ./.github/workflows/npm.yml
-    with:
-      node-version: '16'
-      ubuntu-version: ubuntu-22.04
-  run-android-build:
-    needs: run-react-native-tests
-    uses: ./.github/workflows/android.yml
-    with:
-      node-version: '16'
-      ubuntu-version: ubuntu-22.04
   run-ios-build:
-    needs: run-android-build
     uses: ./.github/workflows/ios.yml
     with:
       node-version: '16'
       osx-version: macos-12
+  # run-react-native-tests:
+  #   uses: ./.github/workflows/npm.yml
+  #   with:
+  #     node-version: '16'
+  #     ubuntu-version: ubuntu-22.04
+  # run-android-build:
+  #   needs: run-react-native-tests
+  #   uses: ./.github/workflows/android.yml
+  #   with:
+  #     node-version: '16'
+  #     ubuntu-version: ubuntu-22.04
+

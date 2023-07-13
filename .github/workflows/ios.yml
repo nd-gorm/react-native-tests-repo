@@ -64,8 +64,9 @@ jobs:
             ${{ runner.OS }}-pods-cache-
 
       - name: Install pod dependencies
-        working-directory: ios
-        run: pod install
+        # working-directory: ios
+        # run: pod install
+        run: NO_FLIPPER=1 bundle exec pod install --project-directory=ios
 
       - name: Install xcpretty
         run: gem install xcpretty
